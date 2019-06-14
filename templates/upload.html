@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<link rel="stylesheet" media="screen" href = "{{ url_for('static', filename='bootstrap.min.css') }}">
+<body>
+<div class="container">
+  <title>Results</title>
+
+  <h1>Uploaded CSV Input Data</h1>
+  <pre style="overflow-x:scroll;">{{csv_data}}</pre>
+
+  <h1>Data Transformed to InterVA5 Format</h1>
+  <pre style="overflow-x:scroll;">{{transform_response}}</pre>
+
+  <h1>JSON Version of InterVA5 Format</h1>
+  <pre style="overflow-x:scroll;">{{algorithm_input}}</pre>
+
+  <h1>InterVA5 Algorithm Results</h1>
+  <pre style="overflow-x:scroll;">{{algorithm_response}}</pre>
+
+  <h1>Charted Data</h1>
+  <canvas id="chart" width="600" height="400"></canvas>
+
+  <script src="static/Chart.min.js"></script>
+
+  <script>
+    var algorithmResponse = JSON.parse({{algorithm_response|tojson}});
+    // Super over-simplified but just to get the idea across, grab the main causes
+    var causes = algorithmResponse.VA5.map((result) => {
+      if (result.INDET[0] === 100) {
+        return "Indeterminate";
+      } else {
+        return result.CAUSE1[0];
+      }
+    });
+    var counts = {};
+    for (cause of causes) {
+      counts[cause] = counts[cause] || 0;
+      counts[cause] += 1;
+    }
+    var labels = Object.keys(counts);
+    var datasets = [
+        {
+          data : Object.values(counts),
+          label: '',
+          backgroundColor: ["#aa4841", "#a3deac","#4aa3ba","#306d75","#c45850"],
+          borderWidth: 1
+        }
+      ];
+    var options = { legend: { display: false }, scales: { yAxes: [{ ticks: { beginAtZero: true } }] } };
+    var context = document.getElementById("chart").getContext("2d");
+    var chart = new Chart(context, { type: 'bar', data: { labels: labels, datasets: datasets }, options: options });
+  </script>
+
+</div>
+</body>
+</html>

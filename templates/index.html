@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+<link rel="stylesheet" media="screen" href = "{{ url_for('static', filename='bootstrap.min.css') }}">
+<body>
+<div class="container">
+  <title>Upload WHO2016 Data File</title>
+  <h1>Upload WHO2016 Data File</h1>
+  <form action=/upload method=post enctype=multipart/form-data>
+    <input type=file name=file>
+    <input type=submit value=Upload>
+  </form>
+</div>
+</body>
+</html>
