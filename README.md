@@ -16,4 +16,4 @@ Then run the demonstration user interface:
   FLASK_ENV=development FLASK_APP=openva.py flask run -p5000
 ```
 
-The service can then be accessed at http://127.0.0.1:5000/
+The service can then be accessed at http://127.0.0.1:5000/ and tested by uploading the `who2016-example-request-14.csv` file included in this directory.
